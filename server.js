@@ -22,17 +22,6 @@ const entries = [
 app.get('/', (req, res) => res.send('Hello World with Express'));
 
 // ========== CRUD OPERATIONS ========== //
-const schema = {
-  firstName: Joi.string()
-    .min(2)
-    .required(),
-  lastName: Joi.string()
-    .min(2)
-    .required(),
-  phone: Joi.string()
-    .min(14)
-    .required(),
-};
 // Get all entries //
 app.get('/api/entries', (req, res) => {
   res.send(entries);
@@ -40,16 +29,14 @@ app.get('/api/entries', (req, res) => {
 // Get a single entry //
 app.get('/api/entry/:id', (req, res) => {
   const entry = entries.find(entry => entry.id === parseInt(req.params.id));
-  if (!entry) res.status(404).send('Entry not found');
+  if (!entry) return res.status(404).send('Entry not found');
   res.send(entry);
 });
 // Create a new entry //
 app.post('/api/entries', (req, res) => {
-  const valid = Joi.validate(req.body, schema);
-  if (valid.error) {
-    res.status(400).send(valid.error.details[0].message);
-    return;
-  }
+  const { error } = validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
   const entry = {
     id: entries.length + 1,
     firstName: req.body.firstName,
@@ -62,13 +49,10 @@ app.post('/api/entries', (req, res) => {
 // Update an entry //
 app.put('/api/entry/:id', (req, res) => {
   const entry = entries.find(entry => entry.id === parseInt(req.params.id));
-  if (!entry) res.status(404).send('Entry not found');
+  if (!entry) return res.status(404).send('Entry not found');
 
-  const valid = Joi.validate(req.body, schema);
-  if (valid.error) {
-    res.status(400).send(valid.error.details[0].message);
-    return;
-  }
+  const { error } = validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
 
   entry.firstName = req.body.firstName;
   entry.lastName = req.body.lastName;
@@ -79,12 +63,27 @@ app.put('/api/entry/:id', (req, res) => {
 // Delete an entry //
 app.delete('/api/entry/:id', (req, res) => {
   const entry = entries.find(entry => entry.id === parseInt(req.params.id));
-  if (!entry) res.status(404).send('Entry not found');
+  if (!entry) return res.status(404).send('Entry not found');
   const index = entries.indexOf(entry);
   entries.splice(index, 1);
   res.send(entry);
 });
 
+function validate(entry) {
+  const schema = {
+    firstName: Joi.string()
+      .min(2)
+      .required(),
+    lastName: Joi.string()
+      .min(2)
+      .required(),
+    phone: Joi.string()
+      .regex(/^\+([0-9]{2} ){2}[0-9]{6,}$/)
+      .required(),
+  };
+  return Joi.validate(entry, schema);
+}
+
 app.listen(port, () => {
-  console.log(`Running phonebook on port ${port} `);
+  console.log(`Running PhoneBook on port ${port} `);
 });
