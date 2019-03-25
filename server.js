@@ -78,7 +78,7 @@ function validate(entry) {
       .min(2)
       .required(),
     phone: Joi.string()
-      .regex(/^\+([0-9]{2} ){2}[0-9]{6,}$/)
+      .regex(/^\+([0-9]{2} ){2}[0-9]{6,12}$/)
       .required(),
   };
   return Joi.validate(entry, schema);
