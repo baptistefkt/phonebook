@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Joi = require('joi');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const app = express();
 
@@ -11,6 +12,7 @@ const urlencodedParser = bodyParser.urlencoded({
 
 app.use(urlencodedParser);
 app.use(bodyParser.json());
+app.use(cors());
 
 const port = process.env.PORT || 8080;
 
