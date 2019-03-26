@@ -4,12 +4,14 @@ import styled from 'styled-components';
 
 const MyLayout = styled.div`
   width: 100%;
-  height: 100%;
+  background: #00b4db;
+  background: -webkit-linear-gradient(to right, #0083b0, #00b4db);
+  background: linear-gradient(to right, #0083b0, #00b4db);
 `;
 
 const Layout = props => (
   <MyLayout>
-    <Header />
+    <Header path={props.path} />
     {props.children}
   </MyLayout>
 );
