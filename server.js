@@ -83,7 +83,7 @@ function validate(entry) {
       .regex(/^\+([0-9]{2} ){2}[0-9]{6,12}$/)
       .required(),
   };
-  return Joi.validate(entry, schema);
+  return Joi.validate(entry, schema, { escapeHtml: true });
 }
 
 app.listen(port, () => {
