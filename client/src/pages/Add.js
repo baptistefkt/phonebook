@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import styled from 'styled-components';
 import Layout from '../components/layout';
+import axios from 'axios';
 
 const PageContainer = styled.section`
   width: 90%;
@@ -32,6 +33,7 @@ const PageContainer = styled.section`
       &:focus {
         outline: none;
         border: 1px solid #00b4db;
+        background-color: #f7f7f7;
       }
     }
 
@@ -43,7 +45,7 @@ const PageContainer = styled.section`
     }
 
     button {
-      width: 90%;
+      width: 95%;
       margin: 0 auto;
       padding: 12px;
       color: #00b4db;
@@ -71,27 +73,88 @@ const PageContainer = styled.section`
   }
 `;
 
-const Add = props => (
-  <Layout path={props.match.path}>
-    <PageContainer>
-      <h1>Create new entry</h1>
-      <form action="">
-        <div>
-          <label htmlFor="firstName">First name</label>
-          <input type="text" id="firstName" name="firstName" />
-        </div>
-        <div>
-          <label htmlFor="lastName">Last name</label>
-          <input type="text" id="lastName" name="lastName" />
-        </div>
-        <div>
-          <label htmlFor="phone">Phone number</label>
-          <input type="text" id="phone" name="phone" />
-        </div>
-        <button type="submit">+ Add entry</button>
-      </form>
-    </PageContainer>
-  </Layout>
-);
+const Add = props => {
+  const [values, setValues] = useReducer(
+    (state, newState) => ({ ...state, ...newState }),
+    {
+      firstName: '',
+      lastName: '',
+      phone: '',
+    }
+  );
+
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setValues({ [name]: value });
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    console.log('submitted: ' + values.firstName);
+
+    axios({
+      method: 'post',
+      url: 'http://localhost:8080/api/entries',
+      data: {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        phone: values.phone,
+      },
+    })
+      .then(response => console.log(response))
+      .catch(error => console.log(error));
+  };
+
+  return (
+    <Layout path={props.match.path}>
+      <PageContainer>
+        <h1>Create new entry</h1>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="firstName">First name</label>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              required
+              minLength="2"
+              maxLength="20"
+              value={values.firstName}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="lastName">Last name</label>
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              required
+              minLength="2"
+              maxLength="20"
+              value={values.lastName}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="phone">
+              Phone number (format: "+31 12 123456")
+            </label>
+            <input
+              type="text"
+              id="phone"
+              name="phone"
+              required
+              pattern="^\+([0-9]{2} ){2}[0-9]{6,12}$"
+              value={values.phone}
+              onChange={handleChange}
+            />
+          </div>
+          <button type="submit">+ Add entry</button>
+        </form>
+      </PageContainer>
+    </Layout>
+  );
+};
 
 export default Add;

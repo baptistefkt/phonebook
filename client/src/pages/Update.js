@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useReducer, useEffect } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 import Layout from '../components/layout';
 
 const PageContainer = styled.section`
   width: 90%;
-  height: 100vh;
+  height: 150vh;
   max-width: 600px;
   margin: 0 auto;
 
@@ -20,7 +21,7 @@ const PageContainer = styled.section`
     border-radius: 4px;
 
     input {
-      width: 50%;
+      width: 90%;
       margin: 10px 0 15px 0;
       padding: 10px;
       border: 1px solid #ebebeb;
@@ -31,6 +32,7 @@ const PageContainer = styled.section`
       &:focus {
         outline: none;
         border: 1px solid #00b4db;
+        background-color: #f7f7f7;
       }
     }
 
@@ -42,7 +44,7 @@ const PageContainer = styled.section`
     }
 
     button {
-      width: 90%;
+      width: 95%;
       margin: 0 auto;
       padding: 12px;
       color: #00b4db;
@@ -70,29 +72,96 @@ const PageContainer = styled.section`
   }
 `;
 
-const Update = props => (
-  <Layout path={props.match.path}>
-    <PageContainer>
-      <h1>Edit this entry</h1>
-      <form action="">
-        <div>
-          <label for="firstName">First name</label>
-          <input type="text" id="firstName" name="firstName" />
-        </div>
-        <div>
-          <label for="lastName">Last name</label>
-          <input type="text" id="lastName" name="lastName" />
-        </div>
-        <div>
-          <label for="phone">Phone number</label>
-          <input type="text" id="phone" name="phone" />
-        </div>
-        <div class="button">
+const Update = props => {
+  const [values, setValues] = useReducer(
+    (state, newState) => ({ ...state, ...newState }),
+    {
+      firstName: '',
+      lastName: '',
+      phone: '',
+    }
+  );
+
+  useEffect(() => {
+    async function getData() {
+      const result = await axios(
+        `http://localhost:8080/api/entry/${props.match.params.id}`
+      );
+      setValues(result.data);
+    }
+    getData();
+  }, []);
+
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setValues({ [name]: value });
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    console.log('submitted: ' + values.firstName);
+
+    axios({
+      method: 'put',
+      url: `http://localhost:8080/api/entry/${props.match.params.id}`,
+      data: {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        phone: values.phone,
+      },
+    })
+      .then(response => console.log(response))
+      .catch(error => console.log(error));
+  };
+
+  return (
+    <Layout path={props.match.path}>
+      <PageContainer>
+        <h1>Edit this entry</h1>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="firstName">First name</label>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              required
+              minLength="2"
+              maxLength="20"
+              onChange={handleChange}
+              value={values !== {} ? values.firstName : ''}
+            />
+          </div>
+          <div>
+            <label htmlFor="lastName">Last name</label>
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              required
+              minLength="2"
+              maxLength="20"
+              onChange={handleChange}
+              value={values !== {} ? values.lastName : ''}
+            />
+          </div>
+          <div>
+            <label htmlFor="phone">Phone number</label>
+            <input
+              type="text"
+              id="phone"
+              name="phone"
+              required
+              pattern="^\+([0-9]{2} ){2}[0-9]{6,12}$"
+              onChange={handleChange}
+              value={values !== {} ? values.phone : ''}
+            />
+          </div>
           <button type="submit">Update entry</button>
-        </div>
-      </form>
-    </PageContainer>
-  </Layout>
-);
+        </form>
+      </PageContainer>
+    </Layout>
+  );
+};
 
 export default Update;
