@@ -12,12 +12,6 @@ $ cd phonebook
 $ npm install
 ```
 
-#### Launch node server
-
-```sh
-$ node server
-```
-
 #### Install MongoDB
 
 Follow the [instructions](https://docs.mongodb.com/guides/server/install/) and install MongoDB on your machine. 
@@ -28,6 +22,11 @@ If MongoDB has started successfully, you should see the following line in your t
 $ [initandlisten] waiting for connections on port 27017
 ```
 
+#### Launch node server
+
+```sh
+$ node server
+```
 
 #### Launch react client
 
