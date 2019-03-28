@@ -16,7 +16,7 @@ const PageContainer = styled.section`
   padding-bottom: 100px;
 
   input {
-    width: 100%;
+    width: 90%;
     margin: 30px 0;
     padding: 15px;
     border: 1px solid #ebebeb;
@@ -38,7 +38,7 @@ const SearchBox = styled.div`
   span {
     position: absolute;
     top: 45px;
-    right: 20px;
+    right: 10%;
     font-size: 18px;
     color: #888;
   }
