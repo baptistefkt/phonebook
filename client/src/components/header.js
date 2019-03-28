@@ -22,7 +22,14 @@ const Header = props => (
   <header>
     <LogoContainer>
       <Link to="/">
-        PhoneBook <span>{props.path === '/' ? '/Contacts' : props.path}</span>
+        PhoneBook{' '}
+        <span>
+          {props.path === '/'
+            ? '/Home'
+            : props.path === '/update/:id'
+            ? '/Edit'
+            : '/Add'}
+        </span>
       </Link>
     </LogoContainer>
     {/* <nav>
