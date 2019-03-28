@@ -40,6 +40,20 @@ Head to ["http://localhost:3000/"](http://localhost:3000/) and try to add a new 
 
 🚀🚀🚀
 
+### Dependencies
+
+#### Back-end
+
+* NodeJS, Express, Mongoose, Joi, body-parser, CORS.
+
+#### Front-end
+
+* ReactJS, react-router, styled-components, axios.
+
+### Credit
+
+* This app was developed and designed by me (no CSS framework)
+* Icons : [fontawesome](https://fontawesome.com/icons?d=gallery)
 
 ### License
 
