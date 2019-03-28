@@ -119,14 +119,12 @@ const Update = ({ match }) => {
         phone: values.phone,
       },
     })
-      .then(response => console.log(response))
       .then((window.location = '/'))
       .catch(error => console.log(error));
   };
 
   return (
     <Layout path={match.path}>
-      {console.log(values)}
       <PageContainer>
         <h1>Edit this entry</h1>
         <form onSubmit={handleSubmit}>

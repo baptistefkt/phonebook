@@ -110,7 +110,6 @@ const Add = ({ match }) => {
         phone: values.phone,
       },
     })
-      .then(response => console.log(response))
       .then((window.location = '/'))
       .catch(error => console.log(error));
   };
