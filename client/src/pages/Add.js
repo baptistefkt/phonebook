@@ -3,9 +3,12 @@ import styled from 'styled-components';
 import Layout from '../components/layout';
 import axios from 'axios';
 
+// ======== STYLE ======== //
+
 const PageContainer = styled.section`
   width: 90%;
-  height: 100vh;
+  min-height: 100vh;
+  padding-bottom: 100px;
   max-width: 500px;
   margin: 0 auto;
 
@@ -42,6 +45,11 @@ const PageContainer = styled.section`
       font-size: 13px;
       text-transform: uppercase;
       display: block;
+
+      span {
+        color: #666;
+        font-size: 11px;
+      }
     }
 
     button {
@@ -73,6 +81,8 @@ const PageContainer = styled.section`
   }
 `;
 
+// ======== COMPONENT ======== //
+
 const Add = props => {
   const [values, setValues] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
@@ -90,7 +100,6 @@ const Add = props => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log('submitted: ' + values.firstName);
 
     axios({
       method: 'post',
@@ -102,6 +111,7 @@ const Add = props => {
       },
     })
       .then(response => console.log(response))
+      .then((window.location = '/'))
       .catch(error => console.log(error));
   };
 
@@ -138,14 +148,14 @@ const Add = props => {
           </div>
           <div>
             <label htmlFor="phone">
-              Phone number (format: "+31 12 123456")
+              Phone number <span>(format: "+31 12 123456")</span>
             </label>
             <input
               type="text"
               id="phone"
               name="phone"
               required
-              pattern="^\+([0-9]{2} ){2}[0-9]{6,12}$"
+              pattern="^\+([0-9]{2} ){2}[0-9]{6,10}$"
               value={values.phone}
               onChange={handleChange}
             />
