@@ -18,17 +18,17 @@ const LogoContainer = styled.div`
   }
 `;
 
-const Header = props => (
+const Header = ({ path }) => (
   <header>
     <LogoContainer>
       <Link to="/">
         PhoneBook{' '}
         <span>
-          {props.path === '/'
-            ? '/Home'
-            : props.path === '/update/:id'
-            ? '/Edit'
-            : '/Add'}
+          {path === '/'
+            ? '/ Home'
+            : path === '/update/:id'
+            ? '/ Edit'
+            : '/ Add'}
         </span>
       </Link>
     </LogoContainer>

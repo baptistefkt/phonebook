@@ -118,7 +118,7 @@ const Flex = styled.div`
 
 // ======== COMPONENT ======== //
 
-const Home = props => {
+const Home = ({ match }) => {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState('');
 
@@ -135,11 +135,11 @@ const Home = props => {
   };
 
   return (
-    <Layout path={props.match.path}>
+    <Layout path={match.path}>
       <PageContainer>
         <SearchBox>
           <input
-            type="search"
+            type="text"
             name="search"
             placeholder="Search for an entry"
             onChange={handleChange}

@@ -83,7 +83,7 @@ const PageContainer = styled.section`
 
 // ======== COMPONENT ======== //
 
-const Add = props => {
+const Add = ({ match }) => {
   const [values, setValues] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
@@ -116,7 +116,7 @@ const Add = props => {
   };
 
   return (
-    <Layout path={props.match.path}>
+    <Layout path={match.path}>
       <PageContainer>
         <h1>Create new entry</h1>
         <form onSubmit={handleSubmit}>

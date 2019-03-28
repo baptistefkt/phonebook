@@ -83,7 +83,7 @@ const PageContainer = styled.section`
 
 // ======== COMPONENT ======== //
 
-const Update = props => {
+const Update = ({ match }) => {
   const [values, setValues] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
@@ -96,7 +96,7 @@ const Update = props => {
   useEffect(() => {
     async function getData() {
       const result = await axios(
-        `http://localhost:8080/api/entries/${props.match.params.id}`
+        `http://localhost:8080/api/entries/${match.params.id}`
       );
       setValues(result.data);
     }
@@ -112,7 +112,7 @@ const Update = props => {
     e.preventDefault();
     axios({
       method: 'put',
-      url: `http://localhost:8080/api/entries/${props.match.params.id}`,
+      url: `http://localhost:8080/api/entries/${match.params.id}`,
       data: {
         firstName: values.firstName,
         lastName: values.lastName,
@@ -125,7 +125,7 @@ const Update = props => {
   };
 
   return (
-    <Layout path={props.match.path}>
+    <Layout path={match.path}>
       {console.log(values)}
       <PageContainer>
         <h1>Edit this entry</h1>

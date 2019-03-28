@@ -9,10 +9,10 @@ const MyLayout = styled.div`
   background: linear-gradient(to right, #0083b0, #00b4db);
 `;
 
-const Layout = props => (
+const Layout = ({ path, children }) => (
   <MyLayout>
-    <Header path={props.path} />
-    {props.children}
+    <Header path={path} />
+    {children}
   </MyLayout>
 );
 
