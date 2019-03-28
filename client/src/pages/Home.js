@@ -9,10 +9,11 @@ import Layout from '../components/layout';
 // ======== STYLE ======== //
 
 const PageContainer = styled.section`
-  height: 100vh;
   width: 95%;
-  max-width: 500px;
+  min-height: 100vh;
+  max-width: 600px;
   margin: 0 auto;
+  padding-bottom: 100px;
 
   input {
     width: 100%;
@@ -98,10 +99,20 @@ const Flex = styled.div`
   a {
     color: #fff;
     flex: 1;
+
+    span {
+      font-size: 12px;
+    }
   }
 
   div {
     flex: 1;
+  }
+
+  @media (max-width: 450px) {
+    span {
+      font-size: 12px;
+    }
   }
 `;
 
@@ -130,7 +141,7 @@ const Home = props => {
           <input
             type="search"
             name="search"
-            placeholder="Search For An Entry"
+            placeholder="Search for an entry"
             onChange={handleChange}
             value={search}
           />
@@ -161,18 +172,20 @@ const Home = props => {
                 if (
                   search !== '' &&
                   data.firstName.indexOf(search) === -1 &&
+                  data.firstName.toLowerCase().indexOf(search) === -1 &&
                   data.lastName.indexOf(search) === -1 &&
+                  data.lastName.toLowerCase().indexOf(search) === -1 &&
                   data.phone.indexOf(search) === -1
                 ) {
                   return null;
                 }
                 return (
-                  <li key={data.id}>
+                  <li key={data._id}>
                     <Flex>
                       <span>{data.firstName}</span>
                       <span>{data.lastName}</span>
                       <span>{data.phone}</span>
-                      <Link to={`/update/${data.id}`}>
+                      <Link to={`/update/${data._id}`}>
                         <span>
                           <FontAwesomeIcon icon={faPen} />
                         </span>
